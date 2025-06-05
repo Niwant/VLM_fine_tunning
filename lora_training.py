@@ -113,6 +113,9 @@ def train_model(dataset_path):
     # Create dataset from the flattened structure
     dataset = Dataset.from_list(training_data)
     
+    # Get unique labels from the dataset
+    label_names = list(set(item["label"] for item in raw_data))
+    
     # Set up training arguments
     training_args = TrainingArguments(
         output_dir="./qwen-vl-lora-urbansound",
@@ -125,6 +128,7 @@ def train_model(dataset_path):
         save_strategy="epoch",
         warmup_ratio=0.1,
         remove_unused_columns=False,
+        label_names=label_names,  # Add label names to training arguments
     )
     
     # Initialize trainer
